@@ -173,6 +173,10 @@ impl ClientSession {
         properties.insert("flashVer".to_string(), Amf0Value::Utf8String(self.config.flash_version.clone()));
         properties.insert("objectEncoding".to_string(), Amf0Value::Number(0.0));
 
+        //  satisfy Simple Realtime Server (SRS, used by Facebook) which requires
+        //  a tcUrl to be present on the connect request
+        properties.insert("tcUrl".to_string(), Amf0Value::Utf8String("".to_owned()));
+
         let message = RtmpMessage::Amf0Command {
             command_name: "connect".to_string(),
             command_object: Amf0Value::Object(properties),
